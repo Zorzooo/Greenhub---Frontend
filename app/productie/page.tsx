@@ -740,9 +740,11 @@ export default function Productie() {
 
   const loturiCuAlerte = loturi.filter(l => l.durata_zile > 0 && (l.zile_in_faza || 0) >= l.durata_zile)
   const loturiNemapate = loturi.filter(l => l.tavi_nemapate > 0)
-  const totalTaviOcupate = hala.reduce((a, b) => a + b.tavi_ocupate, 0)
-  const totalTaviLibere = hala.reduce((a, b) => a + b.tavi_libere, 0)
-  const totalCapacitate = hala.reduce((a, b) => a + b.capacitate_tavi, 0)
+
+  // Calcul pe 98 tavi hidroponice mari (pozitii)
+  const totalPozitii = hala.length  // 98
+  const pozitiiOcupate = hala.filter(p => p.nr_loturi_active > 0).length
+  const pozitiiLibere = hala.filter(p => p.nr_loturi_active === 0).length
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-4">
@@ -789,20 +791,30 @@ export default function Productie() {
         </div>
       )}
 
-      {/* Sumar */}
+      {/* SUMAR — pe 98 tavi hidroponice mari */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        {[
-          { label: 'Loturi active', val: loturi.length, color: 'text-green-400', sub: 'în fabrică' },
-          { label: 'Tavi ocupate', val: totalTaviOcupate, color: 'text-blue-400', sub: `din ${totalCapacitate} total` },
-          { label: 'Tavi libere', val: totalTaviLibere, color: 'text-gray-300', sub: `${totalCapacitate > 0 ? Math.round(totalTaviLibere / totalCapacitate * 100) : 0}% disponibil` },
-          { label: 'Alerte', val: loturiCuAlerte.length, color: loturiCuAlerte.length > 0 ? 'text-red-400' : 'text-green-400', sub: loturiCuAlerte.length > 0 ? 'necesită acțiune' : 'totul ok' },
-        ].map(item => (
-          <div key={item.label} className="bg-gray-800 rounded-xl p-4 border border-gray-700">
-            <div className="text-gray-500 text-xs mb-1">{item.label}</div>
-            <div className={`text-3xl font-bold ${item.color}`}>{item.val}</div>
-            <div className="text-gray-600 text-xs mt-1">{item.sub}</div>
+        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+          <div className="text-gray-500 text-xs mb-1">Loturi active</div>
+          <div className="text-3xl font-bold text-green-400">{loturi.length}</div>
+          <div className="text-gray-600 text-xs mt-1">în fabrică</div>
+        </div>
+        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+          <div className="text-gray-500 text-xs mb-1">Tăvi ocupate</div>
+          <div className="text-3xl font-bold text-blue-400">{pozitiiOcupate}</div>
+          <div className="text-gray-600 text-xs mt-1">din {totalPozitii} tăvi hidroponice</div>
+        </div>
+        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+          <div className="text-gray-500 text-xs mb-1">Tăvi libere</div>
+          <div className="text-3xl font-bold text-gray-300">{pozitiiLibere}</div>
+          <div className="text-gray-600 text-xs mt-1">{totalPozitii > 0 ? Math.round(pozitiiLibere / totalPozitii * 100) : 0}% disponibil</div>
+        </div>
+        <div className="bg-gray-800 rounded-xl p-4 border border-gray-700">
+          <div className="text-gray-500 text-xs mb-1">Alerte faze</div>
+          <div className={`text-3xl font-bold ${loturiCuAlerte.length > 0 ? 'text-red-400' : 'text-green-400'}`}>
+            {loturiCuAlerte.length}
           </div>
-        ))}
+          <div className="text-gray-600 text-xs mt-1">{loturiCuAlerte.length > 0 ? 'necesită acțiune' : 'totul ok'}</div>
+        </div>
       </div>
 
       {/* Legenda */}
