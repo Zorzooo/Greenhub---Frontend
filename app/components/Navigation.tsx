@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Wrench, BarChart2, MessageSquare, ClipboardList, Layers } from 'lucide-react'
+import { LayoutDashboard, Wrench, BarChart2, MessageSquare, ClipboardList, Layers, Leaf } from 'lucide-react'
 
 const meniu = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/control', label: 'Control', icon: Wrench },
   { href: '/grafice', label: 'Grafice', icon: BarChart2 },
-  { href: '/jurnal', label: 'Jurnal', icon: ClipboardList },
   { href: '/productie', label: 'Producție', icon: Layers },
+  { href: '/jurnal', label: 'Jurnal', icon: ClipboardList },
+  { href: '/specii', label: 'Specii', icon: Leaf },
   { href: '/istoric-chat', label: 'Istoric Chat', icon: MessageSquare },
 ]
 
@@ -21,7 +22,7 @@ export default function Navigation() {
       <div className="flex items-center gap-2">
         <span className="text-green-400 font-bold text-lg">🌱 Greenhub</span>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 flex-wrap">
         {meniu.map(item => {
           const Icon = item.icon
           const activ = pathname === item.href
