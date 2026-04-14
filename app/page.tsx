@@ -169,6 +169,31 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-950 text-white p-4">
 
       {/* HEADER */}
+
+      {/* Banner alerte active */}
+    {alerte.filter((a: any) => !a.rezolvat).length > 0 && (
+      <div className="bg-red-950 border border-red-700 rounded-xl p-3 mb-4 mx-4">
+        <div className="flex justify-between items-center mb-2">
+          <div className="text-red-400 font-bold text-sm">
+            🚨 {alerte.filter((a: any) => !a.rezolvat).length} alerte active
+          </div>
+          <a href="/alerte" className="text-red-300 text-xs hover:text-white underline">
+            Vezi toate →
+          </a>
+        </div>
+        <div className="space-y-1">
+          {alerte.filter((a: any) => !a.rezolvat).slice(0, 3).map((a: any) => (
+            <div key={a.id} className="text-red-200 text-xs">• {a.mesaj}</div>
+          ))}
+          {alerte.filter((a: any) => !a.rezolvat).length > 3 && (
+            <div className="text-red-400 text-xs">
+              + {alerte.filter((a: any) => !a.rezolvat).length - 3} altele...
+            </div>
+          )}
+        </div>
+      </div>
+    )}
+
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-xl font-bold text-green-400">Dashboard</h1>

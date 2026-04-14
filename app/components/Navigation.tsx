@@ -2,42 +2,68 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Wrench, BarChart2, MessageSquare, ClipboardList, Layers, Leaf } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-const meniu = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/control', label: 'Control', icon: Wrench },
-  { href: '/grafice', label: 'Grafice', icon: BarChart2 },
-  { href: '/productie', label: 'Producție', icon: Layers },
-  { href: '/jurnal', label: 'Jurnal', icon: ClipboardList },
-  { href: '/specii', label: 'Specii', icon: Leaf },
-  { href: '/istoric-chat', label: 'Istoric Chat', icon: MessageSquare },
-]
+const API = 'http://localhost:8000'
 
 export default function Navigation() {
   const pathname = usePathname()
+  const [nrAlerte, setNrAlerte] = useState(0)
+
+  const fetchAlerte = async () => {
+    try {
+      const res = await axios.get(`${API}/api/alerte`)
+      const active = res.data.filter((a: any) => !a.rezolvat)
+      setNrAlerte(active.length)
+    } catch (e) {}
+  }
+
+  useEffect(() => {
+    fetchAlerte()
+    const interval = setInterval(fetchAlerte, 30000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const links = [
+    { href: '/', label: 'Dashboard', icon: '⊞', badge: false },
+    { href: '/control', label: 'Control', icon: '⚙️', badge: false },
+    { href: '/grafice', label: 'Grafice', icon: '📈', badge: false },
+    { href: '/productie', label: 'Producție', icon: '🌿', badge: false },
+    { href: '/jurnal', label: 'Jurnal', icon: '📋', badge: false },
+    { href: '/rapoarte', label: 'Rapoarte', icon: '📊', badge: false },
+    { href: '/specii', label: 'Specii', icon: '🌱', badge: false },
+    { href: '/alerte', label: 'Alerte', icon: '🚨', badge: true },
+    { href: '/setari', label: 'Setări', icon: '⚙️', badge: false },
+    { href: '/istoric-chat', label: 'Istoric Chat', icon: '💬', badge: false },
+  ]
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-700 px-4 py-2 flex items-center justify-between sticky top-0 z-40">
+    <nav className="bg-gray-900 border-b border-gray-800 px-4 py-2 flex items-center justify-between sticky top-0 z-40">
       <div className="flex items-center gap-2">
         <span className="text-green-400 font-bold text-lg">🌱 Greenhub</span>
       </div>
       <div className="flex items-center gap-1 flex-wrap">
-        {meniu.map(item => {
-          const Icon = item.icon
-          const activ = pathname === item.href
+        {links.map(link => {
+          const isActive = pathname === link.href
           return (
             <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activ
-                  ? 'bg-green-700 text-white'
-                  : 'text-gray-400 hover:bg-gray-700 hover:text-white'
+              key={link.href}
+              href={link.href}
+              className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-green-600 text-white'
+                  : link.badge && nrAlerte > 0
+                    ? 'text-red-400 hover:text-white hover:bg-red-900'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
-              <Icon size={16}/>
-              <span className="hidden md:block">{item.label}</span>
+              {link.label}
+              {link.badge && nrAlerte > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                  {nrAlerte > 9 ? '9+' : nrAlerte}
+                </span>
+              )}
             </Link>
           )
         })}
