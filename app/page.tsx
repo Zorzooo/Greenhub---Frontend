@@ -5,7 +5,7 @@ import axios from 'axios'
 import { MessageSquare, X, History, CheckCircle, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 const PRAGURI: any = {
   temperatura: { min: 19, max: 28, unitate: '°C', label: 'Temperatură', culoare: '#f97316' },

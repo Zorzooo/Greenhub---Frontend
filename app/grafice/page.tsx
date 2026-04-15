@@ -9,7 +9,7 @@ import {
   Tooltip, ResponsiveContainer, ReferenceLine, Legend
 } from 'recharts'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 const CULORI = ['#00d4aa', '#60a5fa', '#f97316', '#a78bfa', '#f43f5e', '#facc15', '#34d399', '#fb923c']
 
 const GRAFICE_IMPLICITE = [

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Plus, X, Edit, ChevronDown, ChevronUp, Leaf } from 'lucide-react'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 const CATEGORII = ['Salată', 'Ierburi aromatice', 'Microgreens', 'Legume', 'Flori', 'Altele']
 
@@ -564,7 +564,7 @@ export default function Specii() {
                     </div>
                   )}
 
-                  <button
+                  <button 
                     onClick={() => deschideEditare(specie, fazeSpecie)}
                     className="mt-4 w-full py-2 bg-blue-800 hover:bg-blue-700 rounded-xl text-sm text-blue-200 font-medium flex items-center justify-center gap-2"
                   >

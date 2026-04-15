@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { X, Plus, ArrowRight, Leaf, Package, Clock, FileText, RotateCcw } from 'lucide-react'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 function ModalPozitie({ shelf, onClose, onRefresh }: any) {
   const [detalii, setDetalii] = useState<any>(null)

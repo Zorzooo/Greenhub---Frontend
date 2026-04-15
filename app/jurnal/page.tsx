@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Plus, CheckCircle, Clock, AlertTriangle, X, Bot } from 'lucide-react'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 const TIPURI = [
   { value: 'observatie', label: '👁️ Observație', color: 'bg-blue-900 border-blue-700' },

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Droplets, Thermometer, Wind, Sun, Activity } from 'lucide-react'
 
-const API = 'http://localhost:8000'
+const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 const ZONE_COMPLETE = [
   { nume: 'M1N1', pozitie: 'Modul 1, Nivel 1', temp: 'M1N1 Temperatura', umid: 'M1N1 Umiditate', co2: 'M1N1 CO2', lumina: 'M1N1 Lumina' },
